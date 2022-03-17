@@ -2,7 +2,7 @@
 
 Create vanilla-compatible animated displays from an animated GIF.
 
-
+![](web/tpn.gif)
 
 # Warnings
 
