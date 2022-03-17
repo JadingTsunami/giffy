@@ -52,8 +52,8 @@ nframes = (imageObject.n_frames)
 
 make_sure(width <= 128, "Only video widths up to 128 are supported. If you need more let me know and I might add it.")
 
-if 128 // width > 1:
-    nimg = int(math.ceil(width/(128/width)))
+if 128 // height > 1:
+    nimg = int(math.ceil(width/(128/height)))
 else:
     nimg = width
 
@@ -75,7 +75,7 @@ for r in range(width):
         imageObject.seek(frame % nframes)
         pf = imageObject.convert('RGBA').load()
         for y in range(height):
-            outpix[r*width//128][frame,y + (r*width%128)] = pf[r,y]
+            outpix[r*height//128][frame,y + (r*height%128)] = pf[r,y]
 
 for i,img in enumerate(outimg):
     img.save("anim%d.png" % i, "PNG")
@@ -85,13 +85,14 @@ Created the following files:
 """
 instructions += "anim%d .. %d.png\n" % (0, nimg-1)
 instructions += "\n"
-instructions += "Each has dimensions %dx%d\n" % (imglimit, 128)
-instructions += "Each contains %d 1px slices of decomposed video.\n" % (math.floor(128/width))
+instructions += "Your animated display's dimensions are %dx%d\n" % (width, height)
+instructions += "Each texture has dimensions %dx%d\n" % (imglimit, 128)
+instructions += "Each texture contains %d 1px slices of decomposed video.\n" % (math.floor(128/height))
 instructions += "\n"
 instructions += "To create your display, create %d 1px lines and give them special 48 (scrolling wall).\n" % (width)
 instructions += "Start the lines with the 0th texture that was generated.\n"
-if 128 // width > 1:
-    instructions += "Increase the y-offset on each line by %d until the offset is >= 128, then use the next texture and reset the y-offset to 0." % (width)
+if 128 // height > 1:
+    instructions += "Increase the y-offset on each line by %d until the offset is >= 128, then use the next texture and reset the y-offset to 0." % (height)
 else:
     instructions += "Use the next texture in the sequence for each subsequent line."
 
