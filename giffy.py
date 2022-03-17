@@ -50,7 +50,7 @@ make_sure(imageObject.n_frames, "GIF doesn't have any animation frames.")
 width, height = imageObject.size
 nframes = (imageObject.n_frames)
 
-make_sure(width <= 128, "Only video widths up to 128 are supported. If you need more let me know and I might add it.")
+make_sure(height <= 128, "Only video heights up to 128 are supported. If you need more let me know and I might add it.")
 
 if 128 // height > 1:
     nimg = int(math.ceil(width/(128/height)))

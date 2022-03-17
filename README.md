@@ -24,7 +24,7 @@ The **WIDTH** of your display will be the most troublesome part. Narrow displays
 
 1. Choose an animated GIF.
     * No more than 1024 frames.
-    * No more than 128px height and width per frame.
+    * No more than 128px height per frame.
     * Only animations with power-of-2 frames will loop smoothly.
 2. Run the program, select your animated GIF.
 3. Import each generated PNG as a Texture in your WAD and follow the instructions you were given at the output prompt.
