@@ -4,6 +4,8 @@ Create vanilla-compatible animated displays from an animated GIF.
 
 ![](web/tpn.gif)
 
+Originally seen in [TRUCK.WAD](https://www.doomworld.com/idgames/levels/doom2/deathmatch/s-u/truck).
+
 # Warnings
 
 **Creating vanilla-compatible animated displays is effort intensive.**
