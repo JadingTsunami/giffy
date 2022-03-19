@@ -25,8 +25,8 @@ def make_sure(condition, msg):
         messagebox.showerror(sys.argv[0], msg)
         sys.exit(1)
 
-def warn(condition, msg):
-    if not condition:
+def warn_if(condition, msg):
+    if condition:
         messagebox.showwarning(sys.argv[0], msg)
 
 imgfile = ""
@@ -63,7 +63,7 @@ outpix = []
 imglimit = max(8,2**(nframes-1).bit_length())
 
 make_sure(imglimit <= 1024, "Only up to 1024 frames is supported. If you need more let me know, I might add it.")
-warn(imglimit % 8 != 0, "Warning: The number of frames in your GIF is not a power of 2. That means your animation won't loop smoothly, or will have blank space at the end. If you don't care, you can ignore this.")
+warn_if(nframes != imglimit, "Warning: The number of frames in your GIF (%d) is not a power of 2 (nearest: %d). That means your animation won't loop smoothly, or will have blank space at the end. If you don't care, you can ignore this." % (nframes, imglimit))
 
 for img in range(nimg):
     outimg.append(Image.new('RGBA', (imglimit,128)))
