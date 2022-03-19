@@ -19,6 +19,11 @@ from PIL import GifImagePlugin
 import math
 import sys
 from tkinter import messagebox
+from tkinter import Tk
+from tkinter.filedialog import askopenfilename
+from tkinter.simpledialog import askinteger
+
+Tk().withdraw()
 
 def make_sure(condition, msg):
     if not condition:
@@ -33,10 +38,6 @@ imgfile = ""
 if len(sys.argv) > 1:
     imgfile = sys.argv[1]
 else:
-    from tkinter import Tk
-    from tkinter.filedialog import askopenfilename
-
-    Tk().withdraw()
     imgfile = askopenfilename(filetypes=[("Animated GIF","*.gif")],multiple=False)
 
 make_sure(imgfile, "Must choose an animated GIF.")
@@ -65,17 +66,25 @@ imglimit = max(8,2**(nframes-1).bit_length())
 make_sure(imglimit <= 1024, "Only up to 1024 frames is supported. If you need more let me know, I might add it.")
 warn_if(nframes != imglimit, "Warning: The number of frames in your GIF (%d) is not a power of 2 (nearest: %d). That means your animation won't loop smoothly, or will have blank space at the end. If you don't care, you can ignore this." % (nframes, imglimit))
 
+framestretch = askinteger(title="Frame Stretch", prompt="How many times should each frame be shown?\nBigger number = slower playback\nMinimum: 1\nMaximum: %d" % (math.floor(1024/imglimit)))
+
+framestretch = max(1, framestretch)
+framestretch = min(math.floor(1024/imglimit), framestretch)
+
 for img in range(nimg):
-    outimg.append(Image.new('RGBA', (imglimit,128)))
+    outimg.append(Image.new('RGBA', (imglimit*framestretch,128)))
     outpix.append(outimg[-1].load())
 
 # split each frame into a single row of pixels
 for r in range(width):
+    fa = 0
     for frame in range(0,imglimit):
         imageObject.seek(frame % nframes)
         pf = imageObject.convert('RGBA').load()
-        for y in range(height):
-            outpix[r*height//128][frame,y + (r*height%128)] = pf[r,y]
+        for fs in range(framestretch):
+            for y in range(height):
+                outpix[r*height//128][fa + fs,y + (r*height%128)] = pf[r,y]
+        fa += framestretch
 
 for i,img in enumerate(outimg):
     img.save("anim%d.png" % i, "PNG")
@@ -86,7 +95,7 @@ Created the following files:
 instructions += "anim%d .. %d.png\n" % (0, nimg-1)
 instructions += "\n"
 instructions += "Your animated display's dimensions are %dx%d\n" % (width, height)
-instructions += "Each texture has dimensions %dx%d\n" % (imglimit, 128)
+instructions += "Each texture has dimensions %dx%d\n" % (imglimit*framestretch, 128)
 instructions += "Each texture contains %d 1px slices of decomposed video.\n" % (math.floor(128/height))
 instructions += "\n"
 instructions += "To create your display, create %d 1px lines and give them special 48 (scrolling wall).\n" % (width)
