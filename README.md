@@ -20,6 +20,9 @@ The **WIDTH** of your display will be the most troublesome part. Narrow displays
 * Tkinter
 * Pillow
 
+
+* *Optional:* [omgifol](https://github.com/devinacker/omgifol) for map generator script
+
 # Instructions
 
 1. Choose an animated GIF.
@@ -29,8 +32,20 @@ The **WIDTH** of your display will be the most troublesome part. Narrow displays
 2. Run the program, select your animated GIF.
     * **Important**: Write down the instructions you receive at the output prompt!
 3. Import each generated PNG as a Texture in your WAD and follow the instructions you were given at the output prompt.
+    * **Note**: You can optionally use the included `mappy.py` to generate the display for you.
 
 # Tips
+
+## Creating the display
+
+A helper script, `mappy.py` is included to generate the display for you.
+
+Requirements: [omgifol](https://github.com/devinacker/omgifol)
+
+Run the script and it will generate `template.wad` with your display assembled, including line offsets. You can copy and paste it into your WAD as you like.
+
+
+## Resizing animated GIFs
 
 Try [ImageMagick](https://imagemagick.org/index.php) for resizing animated GIFs.
 
@@ -47,6 +62,8 @@ Or to force the size to be 32x32:
 ```
 mogrify -resize '32x32!' mygif.gif
 ```
+
+## Converting video to animated GIF
 
 Try [ffmpeg](https://ffmpeg.org/) for converting video to animated GIF format.
 

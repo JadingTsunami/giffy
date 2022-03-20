@@ -54,7 +54,7 @@ nframes = (imageObject.n_frames)
 make_sure(height <= 128, "Only video heights up to 128 are supported. If you need more let me know and I might add it.")
 
 if 128 // height > 1:
-    nimg = int(math.ceil(width/(128/height)))
+    nimg = int(math.ceil(width/math.floor(128/height)))
 else:
     nimg = width
 
