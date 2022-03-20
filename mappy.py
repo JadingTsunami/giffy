@@ -59,6 +59,9 @@ m.draw_sector(vertexes=[(width+8,40), (-8,40), (-8,-8), (width+8,-8)], sidedef=s
 
 m.sectors[-1].z_ceil = int(128 - (128 - height)/2)
 m.sectors[-1].z_floor = int((128 - height)/2)
+m.sectors[-1].light = 255
+m.sectors[-1].tx_floor = "FLAT23"
+m.sectors[-1].tx_ceil = "FLAT23"
 
 
 v = [(width//2,32)]
