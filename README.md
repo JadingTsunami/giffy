@@ -14,6 +14,8 @@ Make sure you actually want to do this as it will require some investment of tim
 
 The **WIDTH** of your display will be the most troublesome part. Narrow displays (&le;32px) will be the easiest to work with, but you can create any size within the limits.
 
+**Strict vanilla** has a limit of 64 scrolling linedefs, which means your display must be &le;64px wide, and you must not have any other scrolling walls in your map. This is not an issue for most ports and is of course no problem for "limit-removing vanilla."
+
 # Pre-requisites
 
 * Python3
