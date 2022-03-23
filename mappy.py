@@ -140,6 +140,48 @@ for lc in m.linedefs:
     elif sf.tx_mid == MIDTEX:
         sf.sector = 0
 
+tidx = 0
+# now draw a 2S transparent version
+# FIXME: needs a wrapper sector with proper heights
+for x in range(width+1):
+    v = Vertex()
+    v.x = x
+    v.y = -256
+    m.vertexes.append(v)
+    if x > 0:
+        # draw a line between this and the previous vertex
+        l = Linedef()
+        l.two_sided = True
+        l.lower_unpeg = True
+        l.action = 48
+        l.vx_a = len(m.vertexes)-2
+        l.vx_b = len(m.vertexes)-1
+        s1 = Sidedef()
+        s2 = Sidedef()
+        s1.sector = 0
+        s2.sector = 0
+
+        s1.tx_mid = prefix
+        if tidx == math.ceil(width / max(1,math.floor(128 / height))):
+            s1.tx_mid = EXTEX
+        else:
+            s1.tx_mid += str(tidx)
+            s1.off_y = offset
+            if offset_needed:
+                offset += height
+                if offset + height > 128:
+                    offset = 0
+                    tnext = True
+                else:
+                    tnext = False
+            if tnext:
+                tidx += 1
+        m.sidedefs.append(s1)
+        l.front = len(m.sidedefs)-1
+        m.sidedefs.append(s2)
+        l.back = len(m.sidedefs)-1
+        m.linedefs.append(l)
+
 w = WAD()
 w.maps["MAP01"] = m.to_lumps()
 w.to_file("template.wad")
