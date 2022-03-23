@@ -36,7 +36,7 @@ if len(sys.argv) == 4:
     height = int(sys.argv[2])
     prefix = sys.argv[3]
     assert width >= 8
-    assert height <= 128
+    assert height <= 1024
 else:
     Tk().withdraw()
     using_tk = True
@@ -45,7 +45,7 @@ else:
     prefix = askstring(title="Prefix", prompt="What is the PREFIX of your display textures?\nEx: ANIM0, ANIM1, ... -- you enter: ANIM\nEx: TEX_0, TEX_1, ... -- you enter: TEX_")
 
 make_sure(width and width >= 8, "Minimum width is 8.")
-make_sure(height and height <= 128, "Maximum height is 1024.")
+make_sure(height and height <= 1024, "Maximum height is 1024.")
 
 m = MapEditor()
 
@@ -58,6 +58,8 @@ s.tx_mid = MIDTEX
 
 # draw a big open sector
 m.draw_sector(vertexes=[(1024,1024), (-1024,1024), (-1024,-1024), (1024,-1024)], sidedef=s)
+
+m.sectors[-1].z_ceil = 1056
 
 # Add a player 1 start so the map can be tested if desired
 p1 = Thing()
@@ -73,8 +75,8 @@ s.tx_up = LUTEX
 
 m.draw_sector(vertexes=[(width+8,40), (-8,40), (-8,-8), (width+8,-8)], sidedef=s)
 
-m.sectors[-1].z_ceil = int(128 - (128 - height)/2)
-m.sectors[-1].z_floor = int((128 - height)/2)
+m.sectors[-1].z_floor = 32
+m.sectors[-1].z_ceil = 32 + height
 m.sectors[-1].light = 255
 m.sectors[-1].tx_floor = "FLAT23"
 m.sectors[-1].tx_ceil = "FLAT23"
@@ -104,7 +106,7 @@ for sd in reversed(m.sidedefs):
             sd.tx_mid = EXTEX
         # FIXME: ideally should handle fractional offsets here,
         # so some textures will be wrong. known bug here.
-        elif tidx == math.ceil(width / math.floor(128 / height)):
+        elif tidx == math.ceil(width / max(1,math.floor(128 / height))):
             sd.tx_mid = EXTEX
         else:
             sd.tx_mid += str(tidx)

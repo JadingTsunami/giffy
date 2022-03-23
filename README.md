@@ -29,7 +29,8 @@ The **WIDTH** of your display will be the most troublesome part. Narrow displays
 
 1. Choose an animated GIF.
     * No more than 1024 frames.
-    * No more than 128px height per frame.
+    * No more than 1024px height per frame.
+        * NOTE: More than 128px height per frame will **NOT** work in strict vanilla
     * Only animations with power-of-2 frames will loop smoothly.
 2. Run the program, select your animated GIF.
     * **Important**: Write down the instructions you receive at the output prompt!
