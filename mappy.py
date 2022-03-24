@@ -142,8 +142,8 @@ for lc in m.linedefs:
 
 tidx = 0
 offset = 0
+tnext = not offset_needed
 # now draw a 2S transparent version
-# FIXME: needs a wrapper sector with proper heights
 for x in range(width+1):
     v = Vertex()
     v.x = x
@@ -182,6 +182,71 @@ for x in range(width+1):
         m.sidedefs.append(s2)
         l.back = len(m.sidedefs)-1
         m.linedefs.append(l)
+
+def make_circle(origin, width, max_angle):
+    # circle version
+    global m
+    global offset_needed
+    radius = width / (2 * math.pi)
+
+    v = []
+    o_x, o_y = origin
+    tidx = 0
+    offset = 0
+    tnext = not offset_needed
+    # positives first
+    step = 1/radius
+    angle = 0
+    first_vert = len(m.vertexes)
+    while angle <= max_angle + step:
+        x = radius * math.cos(angle)
+        y = radius * math.sin(angle)
+        angle += step
+        vert_x = round(o_x + x)
+        vert_y = round(o_y + y)
+        vv = Vertex()
+        vv.x = vert_x
+        vv.y = vert_y
+        m.vertexes.append(vv)
+        if angle > step:
+            # draw a line between this and the previous vertex
+            l = Linedef()
+            l.two_sided = True
+            l.lower_unpeg = True
+            l.action = 48
+            l.vx_a = len(m.vertexes)-2
+            if (max_angle + step) - angle < 0.00001:
+                print("get")
+                l.vx_b = first_vert
+            else:
+                l.vx_b = len(m.vertexes)-1
+            s1 = Sidedef()
+            s2 = Sidedef()
+            s1.sector = 0
+            s2.sector = 0
+
+            s1.tx_mid = prefix
+            if tidx == math.ceil(width / max(1,math.floor(128 / height))):
+                s1.tx_mid = EXTEX
+            else:
+                s1.tx_mid += str(tidx)
+                s1.off_y = offset
+                if offset_needed:
+                    offset += height
+                    if offset + height > 128:
+                        offset = 0
+                        tnext = True
+                    else:
+                        tnext = False
+                if tnext:
+                    tidx += 1
+            m.sidedefs.append(s1)
+            l.front = len(m.sidedefs)-1
+            m.sidedefs.append(s2)
+            l.back = len(m.sidedefs)-1
+            m.linedefs.append(l)
+
+make_circle((width/2,-512), width, 2*math.pi)
 
 w = WAD()
 w.maps["MAP01"] = m.to_lumps()
