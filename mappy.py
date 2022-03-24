@@ -141,6 +141,7 @@ for lc in m.linedefs:
         sf.sector = 0
 
 tidx = 0
+offset = 0
 # now draw a 2S transparent version
 # FIXME: needs a wrapper sector with proper heights
 for x in range(width+1):
