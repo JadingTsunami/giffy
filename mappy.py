@@ -57,7 +57,7 @@ s = Sidedef()
 s.tx_mid = MIDTEX
 
 # draw a big open sector
-m.draw_sector(vertexes=[(1024,1024), (-1024,1024), (-1024,-1024), (1024,-1024)], sidedef=s)
+m.draw_sector(vertexes=[(1536,1536), (-1536,1536), (-1536,-1536), (1536,-1536)], sidedef=s)
 
 m.sectors[-1].z_ceil = 1056
 
@@ -187,7 +187,7 @@ def make_circle(origin, width, max_angle):
     # circle version
     global m
     global offset_needed
-    radius = width / (2 * math.pi)
+    radius = width / (max_angle)
 
     v = []
     o_x, o_y = origin
@@ -215,8 +215,7 @@ def make_circle(origin, width, max_angle):
             l.lower_unpeg = True
             l.action = 48
             l.vx_a = len(m.vertexes)-2
-            if (max_angle + step) - angle < 0.00001:
-                print("get")
+            if (2*math.pi + step) - angle < 0.00001:
                 l.vx_b = first_vert
             else:
                 l.vx_b = len(m.vertexes)-1
@@ -247,6 +246,7 @@ def make_circle(origin, width, max_angle):
             m.linedefs.append(l)
 
 make_circle((width/2,-512), width, 2*math.pi)
+make_circle((width/2,-1024), width, math.pi)
 
 w = WAD()
 w.maps["MAP01"] = m.to_lumps()
